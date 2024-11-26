@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Trophy, CheckCircle2, XCircle, TrendingUp, Tag, Difficulty } from 'lucide-react';
+import { Trophy, CheckCircle2, XCircle, TrendingUp, Tag } from 'lucide-react';
 import { Axios } from '@/services';
 
 // Keeping existing interfaces
