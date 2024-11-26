@@ -8,6 +8,7 @@ const QuestionSchema = new Schema({
   difficulty: { type: String, enum: ['easy', 'medium', 'hard'] },
   tags: [String],
   weight: Number,
+  isLast: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);

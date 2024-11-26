@@ -17,7 +17,7 @@ app.use(
   })
 );
 
-app.get('/', (req, res) => res.send('Brogrammers-AI Backend'));
+app.get('/', (req, res) => res.send('Quiz site'));
 
 app.use('/api', router);
 

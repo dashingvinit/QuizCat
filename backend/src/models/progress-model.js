@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const ProgressSchema = new Schema({
-  userId: mongoose.Types.ObjectId,
-  currentScore: Number,
+const ProgressSchema = new mongoose.Schema({
+  userId: { type: String, required: true, ref: 'User' },
+  quizId: { type: mongoose.Schema.Types.ObjectId, required: true },
   questionsAnswered: [
     {
-      questionId: mongoose.Types.ObjectId,
+      questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
       correct: Boolean,
-      difficulty: String,
+      difficulty: { type: String, enum: ['easy', 'medium', 'hard'] },
     },
   ],
 });
 
-module.exports = new mongoose.model('Progress', ProgressSchema);
+const Progress = mongoose.model('Progress', ProgressSchema);
+module.exports = Progress;

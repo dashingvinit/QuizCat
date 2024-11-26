@@ -15,9 +15,7 @@ module.exports = {
   //authentication
   CLERK_KEY: process.env.CLERK_KEY,
   CLERK_KEY_PRO: process.env.CLERK_KEY_PRO,
-  //razor pay
-  R_KEY_ID: process.env.KEY_ID,
-  R_KEY_SECRET: process.env.KEY_SECRET,
+
   //S3 stuff
   accessKeyId: process.env.ACCESS_KEY,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
