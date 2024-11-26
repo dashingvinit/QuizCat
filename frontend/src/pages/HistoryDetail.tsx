@@ -3,17 +3,31 @@ import { useParams } from 'react-router-dom';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { Axios } from '@/services';
 
+// Define the structure for questionsAnswered items
+interface QuestionDetail {
+  isLast: boolean;
+  _id: string;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  difficulty: string;
+  tags: string[];
+  weight: number;
+}
+
+// Define the structure of questionsAnswered in the API response
+interface QuestionAnswered {
+  questionId: QuestionDetail; // Updated to use QuestionDetail instead of string
+  correct: boolean;
+  difficulty: string;
+  userAnswer: string;
+}
+
+// Define the main QuizHistoryItem interface
 interface QuizHistoryItem {
   _id: string;
   quizId: string;
-  questionsAnswered: Array<{
-    questionId: string;
-    correct: boolean;
-    difficulty: string;
-    question: string;
-    userAnswer: string;
-    correctAnswer: string;
-  }>;
+  questionsAnswered: QuestionAnswered[];
   createdAt: string;
 }
 
@@ -58,7 +72,7 @@ function HistoryDetail() {
   const performancePercentage = ((correctQuestions / totalQuestions) * 100).toFixed(2);
 
   return (
-    <div className=" px-4 py-8">
+    <div className="px-4 py-8">
       <div className="bg-white shadow-lg rounded-xl overflow-hidden">
         <div className="p-6 bg-gray-50 border-b border-gray-200">
           <h1 className="text-2xl font-bold text-gray-800">Quiz Performance</h1>
@@ -70,7 +84,7 @@ function HistoryDetail() {
         <div className="divide-y divide-gray-100">
           {quizDetail.questionsAnswered.map((q, index) => (
             <div
-              key={q._id}
+              key={q.questionId._id}
               className={`p-6 transition-colors duration-200 
                 ${q.correct ? 'bg-green-50 hover:bg-green-100' : 'bg-red-50 hover:bg-red-100'}`}>
               <div className="flex items-start space-x-4">

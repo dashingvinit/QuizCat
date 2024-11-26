@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Brain, Code, Database, Menu, X, GitBranch } from 'lucide-react';
+import { Brain, Code, Database, GitBranch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -32,18 +32,16 @@ const QuizPlatform = () => {
             <Button>Technical Stack</Button>
             <Button>Documentation</Button>
             <div className="h-6 w-px bg-gray-200" /> {/* Separator */}
-            <SignInButton
-              mode="modal"
-              fallbackRedirectUrl={originalRequestUrl}
-              className="w-auto text-sm px-4 py-2 rounded-full bg-white hover:bg-gray-100 font-semibold transition border border-gray-200">
-              Sign In
-            </SignInButton>
-            <SignUpButton
-              mode="modal"
-              fallbackRedirectUrl={originalRequestUrl}
-              className="w-auto text-sm px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
-              Get Started
-            </SignUpButton>
+            <div className="w-full text-sm px-4 text-center py-2 rounded-full bg-white hover:bg-gray-100 font-semibold transition border border-gray-200">
+              <SignInButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
+                Sign In
+              </SignInButton>
+            </div>
+            <div className=" text-sm px-4 py-2 text-center bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
+              <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
+                Get Started
+              </SignUpButton>
+            </div>
           </div>
         </nav>
 
@@ -67,12 +65,11 @@ const QuizPlatform = () => {
               An implementation of a Computerized Adaptive Testing (CAT) system for grades 7-10,
               featuring dynamic question selection and performance analysis.
             </p>
-            <SignUpButton
-              mode="modal"
-              fallbackRedirectUrl={originalRequestUrl}
-              className="w-full text-sm px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
-              Get Started
-            </SignUpButton>
+            <div className="w-full text-sm px-4 py-2 text-center bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
+              <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
+                Get Started
+              </SignUpButton>
+            </div>
           </div>
           <div className="relative font-mono">
             <Card className="bg-black text-green-400 p-4 shadow-xl">
