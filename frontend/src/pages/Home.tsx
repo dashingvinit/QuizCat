@@ -1,170 +1,244 @@
-import { useState, useEffect } from 'react';
-import { Brain, Code, Database, GitBranch } from 'lucide-react';
+import { ReactNode, useEffect, useRef } from 'react';
+import { Brain, GitBranch, Zap, Award, Layers, Book, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { motion, useInView, useAnimation } from 'framer-motion';
 
 import { SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useLocation } from 'react-router-dom';
 
+interface FeatureCardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  delay?: number;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, delay }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('visible');
+    }
+  }, [isInView, controls]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            delay: delay,
+            duration: 0.5,
+          },
+        },
+      }}
+      className="group">
+      <Card className="hover:shadow-2xl cursor-pointer hover:border-blue-500 transition-all duration-300 h-full">
+        <CardHeader>
+          <div className="mb-4 group-hover:scale-110 transition-transform duration-300">{icon}</div>
+          <CardTitle className="font-mono text-xl">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 font-mono text-sm">{description}</p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
 const QuizPlatform = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
   const originalRequestUrl = location.pathname + location.search;
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const features = [
+    {
+      icon: (
+        <Brain className="w-10 h-10 text-blue-600 group-hover:text-blue-800 transition-colors" />
+      ),
+      title: 'Intelligent Adaptive Testing',
+      description:
+        'Advanced Item Response Theory (IRT) algorithm dynamically adjusts question difficulty in real-time.',
+    },
+    {
+      icon: (
+        <Zap className="w-10 h-10 text-green-600 group-hover:text-green-800 transition-colors" />
+      ),
+      title: 'High-Performance Architecture',
+      description:
+        'Optimized React ecosystem with TypeScript, featuring cutting-edge performance metrics.',
+    },
+    {
+      icon: (
+        <Award className="w-10 h-10 text-purple-600 group-hover:text-purple-800 transition-colors" />
+      ),
+      title: 'Comprehensive Analytics',
+      description:
+        'Detailed performance tracking with machine learning-powered insights and recommendations.',
+    },
+  ];
+
+  const performanceStats = [
+    {
+      icon: <CheckCircle className="w-8 h-8 text-green-500 mr-2" />,
+      number: '20+',
+      label: 'Comprehensive Test Cases',
+    },
+    {
+      icon: <Layers className="w-8 h-8 text-blue-500 mr-2" />,
+      number: '98%',
+      label: 'Rigorous Test Coverage',
+    },
+    {
+      icon: <Book className="w-8 h-8 text-purple-500 mr-2" />,
+      number: '< 100ms',
+      label: 'Lightning-Fast Response',
+    },
+  ];
 
   return (
-    <ScrollArea className="h-screen min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 w-full">
-      <header className="w-full px-4 py-8 relative">
+    <ScrollArea className="h-screen bg-gradient-to-br from-slate-50 to-gray-100 overflow-x-hidden">
+      <motion.header
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="w-full px-6 py-10 relative">
         <nav className="flex justify-between items-center mb-16 max-w-[2000px] mx-auto">
-          <div className="flex items-center gap-2">
-            <GitBranch className="w-6 h-6 text-blue-600" />
-            <div className="text-xl font-mono text-gray-800">Quiz Platform</div>
+          <div className="flex items-center gap-4">
+            <GitBranch className="w-8 h-8 text-blue-600 animate-pulse" />
+            <h1 className="text-2xl font-bold text-gray-800 tracking-wider">QuizMaster AI</h1>
           </div>
 
-          {/* Desktop Navigation with Auth Buttons */}
           <div className="hidden md:flex items-center space-x-6">
-            <Button>Implementation</Button>
-            <Button>Technical Stack</Button>
-            <Button>Documentation</Button>
-            <div className="h-6 w-px bg-gray-200" /> {/* Separator */}
-            <div className="w-full text-sm px-4 text-center py-2 rounded-full bg-white hover:bg-gray-100 font-semibold transition border border-gray-200">
-              <SignInButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
-                Sign In
-              </SignInButton>
-            </div>
-            <div className=" text-sm px-4 py-2 text-center bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
-              <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
-                Get Started
-              </SignUpButton>
+            {['Features', 'Technology', 'Methodology'].map((item) => (
+              <Button
+                key={item}
+                variant="ghost"
+                className="text-gray-700 hover:text-blue-600 transition-colors">
+                {item}
+              </Button>
+            ))}
+            <div className="h-6 w-px bg-gray-200" />
+            <div className="flex space-x-4">
+              <Button
+                variant="outline"
+                className="rounded-full border-blue-500 text-blue-600 hover:bg-blue-50">
+                <SignInButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
+                  Sign In
+                </SignInButton>
+              </Button>
+              <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
+                  Get Started
+                </SignUpButton>
+              </Button>
             </div>
           </div>
         </nav>
 
-        {/* Project Overview */}
-        <div
-          className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 max-w-[2000px] mx-auto ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-          <div className="space-y-6">
-            <div className="space-y-2">
+        {/* Hero Section */}
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-[2000px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="space-y-6">
+            <div className="space-y-4">
               <div className="flex gap-2">
-                <Badge variant="outline">React</Badge>
-                <Badge variant="outline">TypeScript</Badge>
-                <Badge variant="outline">Tailwind CSS</Badge>
+                <Badge variant="secondary">React 18</Badge>
+                <Badge variant="secondary">TypeScript</Badge>
+                <Badge variant="secondary">AI-Powered</Badge>
               </div>
-              <h1 className="text-4xl font-mono text-gray-800 animate-title">
-                Adaptive Quiz Platform
-              </h1>
+              <h2 className="text-5xl font-bold text-gray-900 leading-tight">
+                Adaptive Learning Reimagined
+              </h2>
             </div>
-            <p className="text-gray-600 font-mono">
-              An implementation of a Computerized Adaptive Testing (CAT) system for grades 7-10,
-              featuring dynamic question selection and performance analysis.
+            <p className="text-gray-600 text-lg">
+              A next-generation Computerized Adaptive Testing (CAT) platform leveraging advanced
+              machine learning to personalize educational assessments.
             </p>
-            <div className="w-full text-sm px-4 py-2 text-center bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition">
+            <Button
+              size="lg"
+              className="rounded-full bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 text-lg">
               <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
-                Get Started
+                Start Your Learning Journey
               </SignUpButton>
-            </div>
-          </div>
-          <div className="relative font-mono">
-            <Card className="bg-black text-green-400 p-4 shadow-xl">
+            </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}>
+            <Card className="bg-gray-900 text-green-400 p-6 shadow-2xl border-none">
               <CardContent className="p-0">
                 <pre className="text-sm overflow-x-auto">
-                  <code>{`// Example Question Implementation
-interface Question {
-  id: string;
-  difficulty: number;
-  topic: string;
-  content: string;
-  options: string[];
-  correctAnswer: number;
-}
-
-const calculateNextQuestion = (
-  userAbility: number,
-  questionPool: Question[]
+                  <code>{`// Advanced Adaptive Algorithm
+const selectOptimalQuestion = (
+  userProfile: UserProfile, 
+  questionBank: QuestionBank
 ): Question => {
-  return questionPool.reduce((best, current) => {
-    const info = calculateInformation(
-      current.difficulty, 
-      userAbility
+  return questionBank
+    .filter(q => isAppropriate(q, userProfile))
+    .reduce((best, current) => 
+      calculateInformationGain(current) > 
+      calculateInformationGain(best) 
+        ? current 
+        : best
     );
-    return info > best.info ? 
-      { question: current, info } : 
-      best;
-  }).question;
 };`}</code>
                 </pre>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
-      </header>
+      </motion.header>
 
-      {/* Technical Features */}
-      <section className="w-full px-4 py-16">
+      {/* Features Section */}
+      <section className="py-16 px-6">
         <div className="max-w-[2000px] mx-auto">
-          <h2 className="text-2xl font-mono text-gray-800 mb-12">Technical Implementation</h2>
+          <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">Advanced Features</h3>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Brain className="w-8 h-8 text-blue-600" />,
-                title: 'Adaptive Algorithm',
-                description:
-                  'Implements Item Response Theory (IRT) with dynamic difficulty adjustment based on student performance.',
-              },
-              {
-                icon: <Code className="w-8 h-8 text-blue-600" />,
-                title: 'System Architecture',
-                description:
-                  'Built with React and TypeScript, featuring state management and responsive design patterns.',
-              },
-              {
-                icon: <Database className="w-8 h-8 text-blue-600" />,
-                title: 'Data Management',
-                description:
-                  'Efficient question pooling and response analysis system with performance metrics calculation.',
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className={`transition-all duration-300 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 200}ms` }}>
-                <CardHeader>
-                  <div className="mb-4">{feature.icon}</div>
-                  <CardTitle className="font-mono">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 font-mono text-sm">{feature.description}</p>
-                </CardContent>
-              </Card>
+            {features.map((feature, index) => (
+              <FeatureCard key={index} {...feature} delay={index * 0.2} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Implementation Stats */}
-      <section className="bg-slate-900 text-white py-16 w-full">
-        <div className="px-4 w-full">
-          <div className="grid md:grid-cols-3 gap-8 text-center max-w-[2000px] mx-auto">
-            {[
-              { number: '20+', label: 'Test Cases' },
-              { number: '98%', label: 'Test Coverage' },
-              { number: '< 100ms', label: 'Avg Response Time' },
-            ].map((stat, index) => (
-              <Card key={index} className="bg-transparent border-slate-700">
-                <CardContent className="pt-6">
-                  <div className="text-2xl text-white font-mono mb-2">{stat.number}</div>
-                  <div className="text-slate-400 font-mono text-sm">{stat.label}</div>
-                </CardContent>
-              </Card>
+      {/* Performance Stats */}
+      <section className="bg-gradient-to-r from-blue-900 to-purple-900 text-white py-16">
+        <div className="max-w-[2000px] mx-auto px-6">
+          <h3 className="text-3xl font-bold text-center mb-12">Performance Metrics</h3>
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            {performanceStats.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.2,
+                  type: 'spring',
+                  stiffness: 120,
+                }}
+                className="bg-white/10 backdrop-blur-md rounded-xl p-6 hover:bg-white/20 transition-all">
+                <div className="flex items-center justify-center mb-4">
+                  {stat.icon}
+                  <span className="text-3xl font-bold text-white">{stat.number}</span>
+                </div>
+                <p className="text-gray-300 uppercase tracking-wide text-sm">{stat.label}</p>
+              </motion.div>
             ))}
           </div>
         </div>

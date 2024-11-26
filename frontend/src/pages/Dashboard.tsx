@@ -5,8 +5,14 @@ const Dashboard = () => {
   return (
     <ScrollArea>
       <div className="p-1 md:p-4">
-        <Main />
-        <QuizStarter />
+        <div className="flex h-screen -mt-14 w-full items-center gap-2">
+          <div className="w-1/2">
+            <Main />
+          </div>
+          <div className="w-1/2">
+            <QuizStarter />
+          </div>
+        </div>
         <Progress />
         <History />
       </div>

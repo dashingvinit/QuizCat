@@ -1,15 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
 const { QuestionService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
-const mongoose = require('mongoose');
 
 async function startQuiz(req, res) {
   try {
     const userId = req.body.id;
-    const quizId = new mongoose.Types.ObjectId();
-    await QuestionService.startNewQuiz(userId, quizId);
+    const data = await QuestionService.startNewQuiz(userId);
     successResponse.message = 'Quiz started successfully';
-    successResponse.data = { quizId };
+    console.log('controller', data);
+    successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
@@ -20,7 +19,7 @@ async function startQuiz(req, res) {
 async function getQuestion(req, res) {
   try {
     const quizId = req.body.data.quizId;
-    const data = await QuestionService.getNextQuestion(req.body.data.id, quizId);
+    const data = await QuestionService.getNextQuestion(quizId);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
@@ -31,8 +30,8 @@ async function getQuestion(req, res) {
 
 async function submitAnswer(req, res) {
   try {
-    const { id, quizId, questionId, answer } = req.body;
-    const data = await QuestionService.submitAnswer(id, quizId, questionId, answer);
+    const { quizId, questionId, answer } = req.body;
+    const data = await QuestionService.submitAnswer(quizId, questionId, answer);
     successResponse.data = data;
     successResponse.message = 'Answer submitted successfully';
     return res.status(StatusCodes.OK).json(successResponse);
@@ -45,8 +44,8 @@ async function submitAnswer(req, res) {
 
 async function generateReport(req, res) {
   try {
-    const data = await QuestionService.generateReport(req.params.id, req.params.quizId);
-
+    console.log('report controller', req.params.quizId);
+    const data = await QuestionService.generateReport(req.params.quizId);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {

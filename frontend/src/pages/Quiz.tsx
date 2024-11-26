@@ -35,7 +35,6 @@ const QuizPage = () => {
     try {
       const response = await Axios.post<{ data: Question }>(`/question/next`, {
         data: {
-          id: user?.id,
           quizId: quizId,
         },
       });
@@ -88,7 +87,7 @@ const QuizPage = () => {
         <div className="flex-1 flex items-center justify-center bg-blue-50/70 dark:bg-gray-800/80 p-6">
           <div className="max-w-2xl text-center space-y-6">
             <div className="flex justify-center items-center space-x-3">
-              <span className="text-lg font-semibold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900 px-3 py-1 rounded-full">
+              <span className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 bg-blue-100 dark:bg-indigo-900 px-3 py-1 rounded-full">
                 Question
               </span>
             </div>
@@ -102,8 +101,8 @@ const QuizPage = () => {
         <div className="flex-1 bg-white dark:bg-gray-900 flex items-center justify-center p-8">
           <Card className="w-full max-w-md p-8 shadow-2xl dark:bg-gray-800 dark:border-gray-700 space-y-6">
             {/* CAT Algorithm Note */}
-            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 flex items-start space-x-3">
-              <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+            <div className="bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700 rounded-lg p-4 flex items-start space-x-3">
+              <Info className="w-6 h-6 text-indigo-600 dark:text-indigo-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-sm text-gray-700 dark:text-gray-200 font-medium">
                   Adaptive Learning: Questions are dynamically selected using Computerized Adaptive
@@ -120,8 +119,8 @@ const QuizPage = () => {
                   onClick={() => handleAnswerSelect(option)}
                   className={`w-full p-4 text-left rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
                     selectedAnswer === option
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-700/50 ring-2 ring-blue-500'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50/30 dark:hover:bg-gray-700/30'
+                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-700/50 ring-2 ring-indigo-500'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-indigo-300 hover:bg-indigo-50/30 dark:hover:bg-gray-700/30'
                   }`}>
                   <span className="font-medium text-gray-800 dark:text-gray-100">{option}</span>
                 </button>
@@ -141,7 +140,7 @@ const QuizPage = () => {
                 <Button
                   onClick={submitAnswer}
                   disabled={!selectedAnswer}
-                  className="w-full py-6 text-base bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-xl transition-transform transform hover:scale-[1.02]">
+                  className="w-full py-6 text-base bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-xl transition-transform transform hover:scale-[1.02]">
                   Submit Answer
                 </Button>
               )}

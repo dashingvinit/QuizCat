@@ -6,10 +6,6 @@ class ProgressRepository extends CrudRepository {
     super(Progress);
   }
 
-  async get(userId) {
-    return Progress.findOne({ userId });
-  }
-
   async getUserHis(userId) {
     return Progress.find({ userId: userId });
   }
@@ -17,12 +13,13 @@ class ProgressRepository extends CrudRepository {
     return Progress.findOne({ _id: id }).populate('questionsAnswered.questionId').exec();
   }
 
-  async getByQuizId(userId, quizId) {
-    return Progress.findOne({ userId, quizId });
-  }
-
-  async updateProgress(userId, quizId, questionData) {
-    return Progress.updateOne({ userId, quizId }, { $push: { questionsAnswered: questionData } });
+  async updateProgress(quizId, data) {
+    const progress = await Progress.findOneAndUpdate(
+      { _id: quizId },
+      { $push: { questionsAnswered: data } },
+      { new: true, upsert: true }
+    );
+    return progress;
   }
 
   async deleteByUserId(userId) {

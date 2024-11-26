@@ -29,14 +29,11 @@ const ResultsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch results when the component mounts
   useEffect(() => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        const response = await Axios.get<{ data: ResultResponse }>(
-          `/question/report/${user?.id}/${quizId}`
-        );
+        const response = await Axios.get<{ data: ResultResponse }>(`/question/report/${quizId}`);
         setResults(response.data.data);
         setLoading(false);
       } catch (err) {
@@ -64,7 +61,14 @@ const ResultsPage = () => {
     }
   };
 
-  // Determine performance message and color
+  const reviewQuiz = async () => {
+    try {
+      navigate(`/history/${quizId}`);
+    } catch (error) {
+      console.error('Error starting quiz:', error);
+    }
+  };
+
   const getPerformanceMessage = (accuracy: number) => {
     if (accuracy >= 90)
       return { message: 'Excellent Performance!', color: 'text-green-600', icon: TrophyIcon };
@@ -107,7 +111,7 @@ const ResultsPage = () => {
   const PerformanceIcon = performanceData.icon;
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <Card className="max-w-2xl mx-auto shadow-xl">
         <CardHeader className="bg-primary text-secondary text-center py-6">
           <CardTitle className="text-3xl font-bold">Quiz Results</CardTitle>
@@ -123,46 +127,36 @@ const ResultsPage = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center">
+            <div className="text-center bg-blue-50 p-4 rounded-lg">
               <h3 className="text-xl font-semibold text-gray-700">Correct</h3>
               <p className="text-2xl font-bold text-green-600">{results.correctAnswers}</p>
             </div>
-            <div className="text-center">
+            <div className="text-center bg-blue-50 p-4 rounded-lg">
               <h3 className="text-xl font-semibold text-gray-700">Total Questions</h3>
               <p className="text-2xl font-bold text-blue-600">{results.totalQuestions}</p>
             </div>
-            <div className="text-center">
+            <div className="text-center bg-blue-50 p-4 rounded-lg">
               <h3 className="text-xl font-semibold text-gray-700">Accuracy</h3>
               <p className="text-2xl font-bold text-primary">{results.accuracy.toFixed(2)}%</p>
             </div>
           </div>
 
           <div className="mt-6">
-            <Progress
-              value={results.accuracy}
-              className="w-full h-4"
-              // indicatorColor={
-              //   results.accuracy >= 90
-              //     ? 'bg-green-500'
-              //     : results.accuracy >= 75
-              //     ? 'bg-blue-500'
-              //     : results.accuracy >= 50
-              //     ? 'bg-yellow-500'
-              //     : 'bg-red-500'
-              // }
-            />
+            <Progress value={results.accuracy} className="w-full h-4" />
           </div>
 
           {results.suggestions && (
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6">
-              <p className="text-blue-700 italic">
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-6 rounded-lg">
+              <p className="text-yellow-700 italic">
                 <strong>Suggestion:</strong> {results.suggestions}
               </p>
             </div>
           )}
 
           <div className="flex justify-center mt-8 space-x-4">
-            <Button variant="outline">Review Answers</Button>
+            <Button onClick={reviewQuiz} variant="outline">
+              Review Answers
+            </Button>
             <Button onClick={startQuiz}>Take Another Quiz</Button>
           </div>
         </CardContent>

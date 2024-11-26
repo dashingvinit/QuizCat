@@ -5,18 +5,18 @@ const { StatusCodes } = require('http-status-codes');
 const questionRepository = new QuestionRepository();
 const progressRepository = new ProgressRepository();
 
-async function startNewQuiz(userId, quizId) {
+async function startNewQuiz(userId) {
   try {
-    await progressRepository.create({ userId, quizId, questionsAnswered: [] });
+    const data = await progressRepository.create({ userId, questionsAnswered: [] });
+    return data._id;
   } catch (error) {
     throw new AppError('Error starting new quiz', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
-async function getNextQuestion(userId, quizId) {
+async function getNextQuestion(quizId) {
   try {
-    const userProgress = await progressRepository.getByQuizId(userId, quizId);
-
+    const userProgress = await progressRepository.get(quizId);
     let nextQuestionInfo = { difficulty: 'easy', isLast: false };
 
     if (userProgress && userProgress.questionsAnswered.length > 0) {
@@ -59,26 +59,27 @@ async function getNextQuestion(userId, quizId) {
   }
 }
 
-async function submitAnswer(userId, quizId, questionId, answer) {
+async function submitAnswer(quizId, questionId, answer) {
   try {
     const question = await questionRepository.get(questionId);
     const isCorrect = question.correctAnswer === answer;
-    console.log(question.correctAnswer, answer, isCorrect);
-    const data = await progressRepository.updateProgress(userId, quizId, {
+
+    const data = await progressRepository.updateProgress(quizId, {
       questionId,
       correct: isCorrect,
       difficulty: question.difficulty,
     });
+    console.log('submit services', data);
     return data;
   } catch (error) {
     throw new AppError('Error submitting answer', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
-async function generateReport(userId, quizId) {
+async function generateReport(quizId) {
   try {
-    const progress = await progressRepository.getByQuizId(userId, quizId);
-
+    const progress = await progressRepository.get(quizId);
+    console.log(progress);
     const correctAnswers = progress.questionsAnswered.filter((q) => q.correct).length;
     const totalQuestions = progress.questionsAnswered.length;
 
