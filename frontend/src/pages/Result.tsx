@@ -51,7 +51,7 @@ const ResultsPage = () => {
       const response = await Axios.post<{ data: QuizStartResponse }>('/question/start', {
         id: user?.id,
       });
-      const { quizId } = response.data.data;
+      const quizId = response.data.data;
       navigate(`/quiz?id=${quizId}`);
     } catch (error) {
       console.error('Error starting quiz:', error);

@@ -13,6 +13,7 @@ interface Question {
   question: string;
   options: string[];
   isLast: boolean;
+  number: number;
 }
 
 const QuizPage = () => {
@@ -88,7 +89,7 @@ const QuizPage = () => {
           <div className="max-w-2xl text-center space-y-6">
             <div className="flex justify-center items-center space-x-3">
               <span className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 bg-blue-100 dark:bg-indigo-900 px-3 py-1 rounded-full">
-                Question
+                Question {currentQuestion?.number} of 5
               </span>
             </div>
             <h2 className="text-4xl font-extralight text-gray-800 dark:text-gray-100 leading-tight tracking-wide">

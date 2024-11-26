@@ -44,7 +44,6 @@ async function submitAnswer(req, res) {
 
 async function generateReport(req, res) {
   try {
-    console.log('report controller', req.params.quizId);
     const data = await QuestionService.generateReport(req.params.quizId);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);

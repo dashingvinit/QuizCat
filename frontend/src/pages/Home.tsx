@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { motion, useInView, useAnimation } from 'framer-motion';
-
+import axios from 'axios';
 import { SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useLocation } from 'react-router-dom';
 
@@ -21,7 +21,12 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, del
   const isInView = useInView(ref, { once: true });
   const controls = useAnimation();
 
+  const startServer = async () => {
+    await axios.get('https://quiz-backend-zel6.onrender.com');
+  };
+
   useEffect(() => {
+    startServer();
     if (isInView) {
       controls.start('visible');
     }
@@ -44,9 +49,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, del
         },
       }}
       className="group">
-      <Card className="hover:shadow-2xl cursor-pointer hover:border-blue-500 transition-all duration-300 h-full">
+      <Card className="hover:shadow-2xl cursor-pointer hover:border-indigo-500 transition-all duration-300 h-full">
         <CardHeader>
-          <div className="mb-4 group-hover:scale-110 transition-transform duration-300">{icon}</div>
+          <div className="mb-4 group-hover:scale-105 transition-transform duration-300">{icon}</div>
           <CardTitle className="font-mono text-xl">{title}</CardTitle>
         </CardHeader>
         <CardContent>
@@ -64,7 +69,7 @@ const QuizPlatform = () => {
   const features = [
     {
       icon: (
-        <Brain className="w-10 h-10 text-blue-600 group-hover:text-blue-800 transition-colors" />
+        <Brain className="w-10 h-10 text-indigo-600 group-hover:text-indigo-800 transition-colors" />
       ),
       title: 'Intelligent Adaptive Testing',
       description:
@@ -95,7 +100,7 @@ const QuizPlatform = () => {
       label: 'Comprehensive Test Cases',
     },
     {
-      icon: <Layers className="w-8 h-8 text-blue-500 mr-2" />,
+      icon: <Layers className="w-8 h-8 text-indigo-500 mr-2" />,
       number: '98%',
       label: 'Rigorous Test Coverage',
     },
@@ -115,29 +120,29 @@ const QuizPlatform = () => {
         className="w-full px-6 py-10 relative">
         <nav className="flex justify-between items-center mb-16 max-w-[2000px] mx-auto">
           <div className="flex items-center gap-4">
-            <GitBranch className="w-8 h-8 text-blue-600 animate-pulse" />
-            <h1 className="text-2xl font-bold text-gray-800 tracking-wider">QuizMaster AI</h1>
+            <GitBranch className="w-8 h-8 text-indigo-600 animate-pulse" />
+            <h1 className="text-2xl font-bold text-gray-800 tracking-wider">QuizMaster</h1>
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
-            {['Features', 'Technology', 'Methodology'].map((item) => (
-              <Button
-                key={item}
-                variant="ghost"
-                className="text-gray-700 hover:text-blue-600 transition-colors">
-                {item}
-              </Button>
-            ))}
+            <Button
+              variant="ghost"
+              className="text-gray-700 hover:text-indigo-600 transition-colors rounded-xl">
+              <a href="https://www.linkedin.com/in/vinit-p-jain-327444178/" target="_blank">
+                Vinit Jain
+              </a>
+            </Button>
+
             <div className="h-6 w-px bg-gray-200" />
             <div className="flex space-x-4">
               <Button
                 variant="outline"
-                className="rounded-full border-blue-500 text-blue-600 hover:bg-blue-50">
+                className="rounded-full border-indigo-500 text-indigo-600 hover:bg-blue-50">
                 <SignInButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
                   Sign In
                 </SignInButton>
               </Button>
-              <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+              <Button className="rounded-full bg-indigo-600 text-white hover:bg-indigo-700">
                 <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
                   Get Started
                 </SignUpButton>
@@ -169,7 +174,7 @@ const QuizPlatform = () => {
             </p>
             <Button
               size="lg"
-              className="rounded-full bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 text-lg">
+              className="rounded-full bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-3 text-lg">
               <SignUpButton mode="modal" fallbackRedirectUrl={originalRequestUrl}>
                 Start Your Learning Journey
               </SignUpButton>
@@ -180,9 +185,9 @@ const QuizPlatform = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}>
-            <Card className="bg-gray-900 text-green-400 p-6 shadow-2xl border-none">
+            <Card className="bg-gray-900 text-green-400 p-6 shadow-2xl border-none overflow-hidden hidden md:block">
               <CardContent className="p-0">
-                <pre className="text-sm overflow-x-auto">
+                <pre className="text-sm overflow-x-hidden">
                   <code>{`// Advanced Adaptive Algorithm
 const selectOptimalQuestion = (
   userProfile: UserProfile, 

@@ -42,7 +42,7 @@ export default function QuizSkillsRadarChart() {
         <CardDescription>User Skill Proficiency Across Different Domains</CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[365px]">
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square">
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <PolarGrid gridType="circle" radialLines={false} />

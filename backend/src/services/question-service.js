@@ -52,7 +52,11 @@ async function getNextQuestion(quizId) {
       nextQuestion = qs;
     }
 
-    return { ...nextQuestion.toObject(), isLast: nextQuestionInfo.isLast };
+    return {
+      ...nextQuestion.toObject(),
+      isLast: nextQuestionInfo.isLast,
+      number: userProgress.questionsAnswered.length + 1,
+    };
   } catch (error) {
     // console.log(error);
     throw new AppError('Cannot get next question', StatusCodes.INTERNAL_SERVER_ERROR);
@@ -69,7 +73,7 @@ async function submitAnswer(quizId, questionId, answer) {
       correct: isCorrect,
       difficulty: question.difficulty,
     });
-    console.log('submit services', data);
+
     return data;
   } catch (error) {
     throw new AppError('Error submitting answer', StatusCodes.INTERNAL_SERVER_ERROR);

@@ -1,4 +1,4 @@
-import { Main, QuizStarter, Progress, History } from '@/components/dash';
+import { Main, QuizStarter, History } from '@/components/dash';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Dashboard = () => {
@@ -13,7 +13,7 @@ const Dashboard = () => {
             <QuizStarter />
           </div>
         </div>
-        <Progress />
+        {/* <Progress /> */}
         <History />
       </div>
     </ScrollArea>

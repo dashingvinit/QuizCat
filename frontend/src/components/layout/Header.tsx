@@ -1,6 +1,6 @@
 'use client';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { Blocks } from 'lucide-react';
+import { GitBranch } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -8,9 +8,9 @@ export default function Header() {
       <SidebarMenuItem>
         <SidebarMenuButton>
           <div>
-            <Blocks />
+            <GitBranch />
           </div>
-          <h1>Quizer</h1>
+          <h1>QuizMaster</h1>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
