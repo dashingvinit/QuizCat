@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import Quiz from './Quiz';
 import Result from './Result';
 import HistoryPage from './History';
-import HistoryDetail from './HistoryDetail';
+import QuizDetail from './QuizDetail';
 
 function pages() {
   return (
@@ -13,7 +13,7 @@ function pages() {
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/quiz/results" element={<Result />} />
       <Route path="/history" element={<HistoryPage />} />
-      <Route path="/history/:id" element={<HistoryDetail />} />
+      <Route path="/history/:id" element={<QuizDetail />} />
     </Routes>
   );
 }
