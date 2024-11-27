@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Trophy, CheckCircle2, XCircle, TrendingUp, Tag } from 'lucide-react';
+import { CheckCircle2, XCircle, TrendingUp, Tag } from 'lucide-react';
 import { Axios } from '@/services';
+import { LoadingSpinner, NotFound, QuizHeader, NavigationTabs } from '@/components/QuizDetail';
 
 // Keeping existing interfaces
 interface QuestionDetail {
@@ -46,66 +47,32 @@ function HistoryDetail() {
         setLoading(false);
       }
     };
-
     fetchQuizDetail();
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-pulse">
-            <Trophy className="mx-auto h-16 w-16 text-blue-500 mb-4" />
-            <p className="text-xl text-gray-600">Loading quiz results...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!quizDetail) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-xl shadow-md text-center">
-          <XCircle className="mx-auto h-16 w-16 text-red-500 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-800">No Quiz Details Found</h2>
-          <p className="text-gray-600 mt-2">The quiz history could not be retrieved.</p>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 
   const totalQuestions = quizDetail.questionsAnswered.length;
   const correctQuestions = quizDetail.questionsAnswered.filter((q) => q.correct).length;
   const performancePercentage = ((correctQuestions / totalQuestions) * 100).toFixed(2);
 
-  // Performance categorization
-  const getPerformanceCategory = (percentage: number) => {
-    if (percentage >= 90) return { label: 'Excellent', color: 'text-green-600' };
-    if (percentage >= 75) return { label: 'Great', color: 'text-blue-600' };
-    if (percentage >= 50) return { label: 'Good', color: 'text-yellow-600' };
-    return { label: 'Needs Improvement', color: 'text-red-600' };
-  };
-
-  const performance = getPerformanceCategory(parseFloat(performancePercentage));
-
   return (
     <div className="h-full p-2 lg:p-6">
       <div className="mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Quiz Performance Report</h1>
-              <p className="">Detailed breakdown of your recent quiz</p>
-            </div>
-            <div>
-              <div className={`text-2xl font-bold ${performance.color}`}>{performance.label}!</div>
-            </div>
-          </div>
-        </div>
+        <QuizHeader
+          title="Quiz Performance Report"
+          subtitle="Detailed breakdown of your recent quiz"
+          performancePercentage={parseFloat(performancePercentage)}
+          correctQuestions={correctQuestions}
+          totalQuestions={totalQuestions}
+        />
 
-        {/* Performance Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center mb-4">
@@ -143,27 +110,7 @@ function HistoryDetail() {
           </div>
         </div>
 
-        {/* Navigation */}
-        <div className="flex border-b mb-6">
-          <button
-            onClick={() => setActiveView('summary')}
-            className={`px-4 py-2 ${
-              activeView === 'summary'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-600'
-            }`}>
-            Summary
-          </button>
-          <button
-            onClick={() => setActiveView('questions')}
-            className={`px-4 py-2 ${
-              activeView === 'questions'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-600'
-            }`}>
-            Question Details
-          </button>
-        </div>
+        <NavigationTabs activeView={activeView} setActiveView={setActiveView} />
 
         {/* Content Sections */}
         {activeView === 'summary' ? (
