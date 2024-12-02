@@ -102,6 +102,7 @@ quizcat/
 │   ├── models/           # Data models
 │   ├── controllers/      # API logic
 │   ├── routes/           # Express routes
+│   ├── repository/       # Database logic
 │   ├── utils/            # Utility functions
 │   ├── package.json
 │   └── server.js         # Main application entry point
