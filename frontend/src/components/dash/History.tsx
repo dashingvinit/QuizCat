@@ -175,7 +175,7 @@ function History() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedData.map((quiz) => (
-            <HistoryCard key={quiz._id} quiz={quiz} navigate={navigate} />
+            <HistoryCard key={quiz?._id} quiz={quiz} navigate={navigate} />
           ))}
         </div>
       )}

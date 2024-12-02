@@ -73,7 +73,7 @@ async function submitAnswer(quizId, questionId, answer) {
       correct: isCorrect,
       difficulty: question.difficulty,
     });
-
+    console.log(data);
     return data;
   } catch (error) {
     throw new AppError('Error submitting answer', StatusCodes.INTERNAL_SERVER_ERROR);
